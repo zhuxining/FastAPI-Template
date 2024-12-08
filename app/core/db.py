@@ -14,10 +14,6 @@ class Base(DeclarativeBase):
     pass
 
 
-class User(SQLAlchemyBaseUserTableUUID, Base):
-    pass
-
-
 engine = create_async_engine(settings.DATABASE_URL)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
@@ -33,4 +29,5 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    from app.models.user import User  # Import here to avoid circular dependency
     yield SQLAlchemyUserDatabase(session, User)

@@ -10,8 +10,8 @@ from fastapi_users.authentication import (
 )
 
 from app.core.config import settings
-from app.core.db import User, get_user_db
-
+from app.core.db import get_user_db
+from app.models import User
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     reset_password_token_secret = settings.SECRET_KEY
