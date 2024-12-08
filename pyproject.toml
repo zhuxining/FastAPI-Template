@@ -12,6 +12,9 @@ dependencies = [
     "sqlmodel>=0.0.14",
     "alembic>=1.13.0",
     "loguru>=0.7.3",
+    "fastapi-users[oauth,sqlalchemy]>=14.0.0",
+    "pwdlib>=0.2.1",
+    "aiosqlite>=0.20.0",
 ]
 
 [tool.uv]

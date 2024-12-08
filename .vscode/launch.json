@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Debug FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app.app:app",
+                "--reload",
+            ],
+            "jinja": true
+        }
+    ]
+}
