@@ -1,5 +1,6 @@
 from fastapi_users.db import SQLAlchemyBaseUserTableUUID
 from sqlalchemy.orm import relationship
+
 from app.core.db import Base
 
 

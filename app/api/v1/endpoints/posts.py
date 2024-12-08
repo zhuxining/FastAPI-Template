@@ -1,7 +1,8 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
+
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import schemas
 from app.api import deps
@@ -36,9 +37,7 @@ async def read_posts(
     limit: int = 100,
     current_user: User = Depends(deps.get_current_active_user),
 ):
-    result = await db.execute(
-        select(Post).offset(skip).limit(limit)
-    )
+    result = await db.execute(select(Post).offset(skip).limit(limit))
     posts = result.scalars().all()
     return posts
 
@@ -71,11 +70,11 @@ async def update_post(
         raise HTTPException(status_code=404, detail="Post not found")
     if (post.author_id == current_user.id) is not True:
         raise HTTPException(status_code=403, detail="Not enough permissions")
-    
+
     update_data = post_in.dict(exclude_unset=True)
     for field, value in update_data.items():
         setattr(post, field, value)
-    
+
     db.add(post)
     await db.commit()
     await db.refresh(post)
@@ -95,7 +94,7 @@ async def delete_post(
         raise HTTPException(status_code=404, detail="Post not found")
     if (post.author_id == current_user.id) is not True:
         raise HTTPException(status_code=403, detail="Not enough permissions")
-    
+
     await db.delete(post)
     await db.commit()
     return {"status": "success"}

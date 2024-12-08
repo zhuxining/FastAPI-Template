@@ -1,11 +1,9 @@
 from typing import AsyncGenerator
-import uuid
 
 from fastapi import Depends
-from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
+from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import UUID
+from sqlalchemy.orm import DeclarativeBase
 
 from app.core.config import settings
 
@@ -30,4 +28,5 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     from app.models.user import User  # Import here to avoid circular dependency
+
     yield SQLAlchemyUserDatabase(session, User)

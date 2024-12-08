@@ -13,6 +13,7 @@ from app.core.config import settings
 from app.core.db import get_user_db
 from app.models import User
 
+
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     reset_password_token_secret = settings.SECRET_KEY
     verification_token_secret = settings.SECRET_KEY
@@ -40,8 +41,7 @@ bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(
-        secret=settings.SECRET_KEY,
-        lifetime_seconds=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
+        secret=settings.SECRET_KEY, lifetime_seconds=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
     )
 
 

@@ -1,5 +1,5 @@
-from .user import UserRead, UserCreate, UserUpdate
-from .post import Post, PostCreate, PostUpdate, PostBase
+from .post import Post, PostBase, PostCreate, PostUpdate
+from .user import UserCreate, UserRead, UserUpdate
 
 __all__ = [
     "UserRead",
