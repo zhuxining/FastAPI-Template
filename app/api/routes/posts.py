@@ -16,7 +16,7 @@ async def create_post(
     *,
     db: AsyncSession = Depends(deps.get_db),
     post_in: schemas.PostCreate,
-    current_user: User = Depends(deps.get_current_active_user),
+    current_user: User = Depends(deps.current_active_user),
 ):
     post = Post(
         title=post_in.title,
@@ -35,7 +35,7 @@ async def read_posts(
     db: AsyncSession = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
-    current_user: User = Depends(deps.get_current_active_user),
+    current_user: User = Depends(deps.current_active_user),
 ):
     result = await db.execute(select(Post).offset(skip).limit(limit))
     posts = result.scalars().all()
@@ -47,7 +47,7 @@ async def read_post(
     *,
     db: AsyncSession = Depends(deps.get_db),
     post_id: int,
-    current_user: User = Depends(deps.get_current_active_user),
+    current_user: User = Depends(deps.current_active_user),
 ):
     result = await db.execute(select(Post).filter(Post.id == post_id))
     post = result.scalar_one_or_none()
@@ -62,7 +62,7 @@ async def update_post(
     db: AsyncSession = Depends(deps.get_db),
     post_id: int,
     post_in: schemas.PostUpdate,
-    current_user: User = Depends(deps.get_current_active_user),
+    current_user: User = Depends(deps.current_active_user),
 ):
     result = await db.execute(select(Post).filter(Post.id == post_id))
     post = result.scalar_one_or_none()
@@ -86,7 +86,7 @@ async def delete_post(
     *,
     db: AsyncSession = Depends(deps.get_db),
     post_id: int,
-    current_user: User = Depends(deps.get_current_active_user),
+    current_user: User = Depends(deps.current_active_user),
 ):
     result = await db.execute(select(Post).filter(Post.id == post_id))
     post = result.scalar_one_or_none()

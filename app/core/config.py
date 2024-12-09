@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     # API Settings
     API_V1_STR: str = "/api/v1"
     PROJECT_NAME: str = "YLSH Backend"
-    VERSION: str = "0.1.0"
+    VERSION: str = "0.1.1"
     DESCRIPTION: str = "Modern FastAPI backend with FastAPI Users"
 
     # CORS Settings

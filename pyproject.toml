@@ -31,6 +31,7 @@ select = ["E", "F", "B", "I"]
 target-version = "py312"
 exclude = ["alembic"]
 line-length = 100
+fix = true
 
 [tool.mypy]
 python_version = "3.12"

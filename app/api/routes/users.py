@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
+from app.api.deps import current_active_user, fastapi_users
 from app.models.user import User
 from app.schemas import UserRead, UserUpdate
-from app.users import current_active_user, fastapi_users
 
 router = APIRouter()
 

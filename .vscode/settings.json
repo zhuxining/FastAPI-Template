@@ -9,6 +9,16 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "[jsonc]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    }
+        "editor.defaultFormatter": null
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "python.envFile": "${workspaceFolder}/.venv",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.analysis.fixAll": [
+        "source.convertImportFormat",
+        "source.unusedImports"
+    ],
+    "ruff.fixAll": true,
+    "python.analysis.typeCheckingMode": "standard"
 }

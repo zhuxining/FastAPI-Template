@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.api import api_router
+from app.api.api import api_router
 from app.core.config import settings
 from app.core.db import create_db_and_tables
 
@@ -18,6 +18,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description=settings.DESCRIPTION,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
     version=settings.VERSION,
     lifespan=lifespan,
 )
