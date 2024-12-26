@@ -3,7 +3,7 @@ name = "ylsh-backend"
 version = "0.1.0"
 description = "Modern FastAPI backend with best practices"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.108.0",
     "uvicorn[standard]>=0.25.0",
@@ -21,20 +21,27 @@ dependencies = [
 dev-dependencies = [
     "pytest-asyncio>=0.23.2",
     "httpx>=0.25.2",
-    "ruff>=0.1.6",
     "mypy>=1.7.1",
     "pytest>=8.3.4",
+    "ruff>=0.8.2",
 ]
 
 [tool.ruff]
-select = ["E", "F", "B", "I"]
-target-version = "py312"
+target-version = "py313"
 exclude = ["alembic"]
 line-length = 100
+indent-width = 4
 fix = true
 
+[tool.ruff.lint]
+select = ["F", "E", "N", "I", "FAST"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 strict = true
 exclude = ["venv", ".venv", "alembic"]
 plugins = ["pydantic.mypy"]

@@ -1,16 +1,17 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from typing import Optional
 
-from app.core.db import Base
+from sqlmodel import Field, Relationship, SQLModel
+
+from app.models.user import User
 
 
-class Post(Base):
+class Post(SQLModel, table=True):
     __tablename__ = "posts"
 
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    content = Column(String)
-    published = Column(Boolean, default=True)
-    author_id = Column(Integer, ForeignKey("user.id"))
+    id: Optional[int] = Field(default=None, primary_key=True, index=True)
+    title: str = Field(index=True)
+    content: str
+    published: bool = Field(default=True)
+    author_id: int = Field(foreign_key="user.id")
 
-    author = relationship("User", back_populates="posts")
+    author: Optional[User] = Relationship(back_populates="posts")

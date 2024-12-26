@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 
 from app.api.deps import current_active_user, fastapi_users
@@ -14,5 +16,5 @@ router.include_router(
 
 
 @router.get("/me", tags=["users"])
-async def authenticated_route(user: User = Depends(current_active_user)):
+async def authenticated_route(user: Annotated[User, Depends(current_active_user)]):
     return {"message": f"Hello {user.email}!", "user": user}

@@ -1,8 +1,13 @@
-from fastapi_users.db import SQLAlchemyBaseUserTableUUID
-from sqlalchemy.orm import relationship
+from typing import List
 
-from app.core.db import Base
+from fastapi_users.db import SQLModelBaseUserTableUUID
+from sqlmodel import Relationship, SQLModel
+
+from app.models.post import Post
 
 
-class User(SQLAlchemyBaseUserTableUUID, Base):
-    posts = relationship("Post", back_populates="author")
+class User(SQLModelBaseUserTableUUID, SQLModel, table=True):
+    posts: List["Post"] = Relationship(back_populates="author")
+
+    class Config:
+        orm_mode = True
