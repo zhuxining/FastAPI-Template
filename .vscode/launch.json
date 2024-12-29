@@ -4,12 +4,16 @@
             "name": "Debug FastAPI",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
+            "module": "granian",
             "args": [
+                "--interface",
+                "asgi",
                 "app.main:app",
                 "--reload",
+                "--log",
+                "--access-log",
             ],
-            "jinja": true
+            "jinja": false
         }
     ]
 }

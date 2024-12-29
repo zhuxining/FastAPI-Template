@@ -299,6 +299,25 @@ wheels = [
 ]
 
 [[package]]
+name = "granian"
+version = "1.7.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "uvloop", marker = "platform_python_implementation == 'CPython' and sys_platform != 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f0/6e/12435e978de9bfb35eb07d9effe06e1380658cfe4b421e7968862c5d473d/granian-1.7.3.tar.gz", hash = "sha256:b6a67c97b82aff03394bddfdbc7e7132f9b6e1ca1eb94d322e0861bb3c4aed98", size = 80485 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/52/7d/e9342444873d9695a20236b2eca93c0de87f37951727edb1329a548260e1/granian-1.7.3-cp313-cp313-macosx_10_12_x86_64.whl", hash = "sha256:ee5c8fc5d52cf49100a6f49cc181513e6e091699630fa230276162f970405b3e", size = 2493225 },
+    { url = "https://files.pythonhosted.org/packages/61/51/2121fe322b0963b914b3d22ec6822d06e1e6b958ea8d5a81c8808ea7ec76/granian-1.7.3-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:48b0ed8b01a53872615242c1356cd985c70530561e3da9a7190075177035a446", size = 2243915 },
+    { url = "https://files.pythonhosted.org/packages/10/4a/be0f515f5040a5332b0e44710e842801fc8110e72808ad36d4221e36b2d5/granian-1.7.3-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:221e5ec229542afa5243dc72ce3464907419551860c01beac9a35485e39a0377", size = 2228685 },
+    { url = "https://files.pythonhosted.org/packages/14/07/18dab6c309c483aa992f2a39ce7792176ea3e9782bbd33191eec0940a283/granian-1.7.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1fac8ab4ab91bc8b2dd04253a557c70d82d0ef10455a00a3e9ead54db73938ac", size = 2355505 },
+    { url = "https://files.pythonhosted.org/packages/05/42/2fdaa5b5c1965b383b973716024c45c17f2be93d2f504c58a22a26656889/granian-1.7.3-cp313-cp313-musllinux_1_1_aarch64.whl", hash = "sha256:d510d1bf3d84c0414cd3384fef8451b28d5b570a2d012cbabf5596d6926084cb", size = 2408354 },
+    { url = "https://files.pythonhosted.org/packages/26/5c/14358ce7ee2c8ee8d9bc725e963121ba7eb2e77f1febbb2e0f6cb66d2761/granian-1.7.3-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:c8a1c03018a5f7c2b216533bf8ef0efba632146c6d574ac6a76b7bd2fe922a5d", size = 2526692 },
+    { url = "https://files.pythonhosted.org/packages/29/41/df89a8bd8ecf2f4394deff70d032cebcc477eec9370d52512ee9174d124c/granian-1.7.3-cp313-cp313-win_amd64.whl", hash = "sha256:a7b9c53c77d368e20578e2da541e50298b2adae1d2b67d21f7b70ee83cd6f995", size = 2476843 },
+]
+
+[[package]]
 name = "greenlet"
 version = "3.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -942,7 +961,7 @@ wheels = [
 ]
 
 [[package]]
-name = "ylsh-backend"
+name = "ylsk-backend"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
@@ -950,12 +969,12 @@ dependencies = [
     { name = "alembic" },
     { name = "fastapi", extra = ["standard"] },
     { name = "fastapi-users", extra = ["oauth", "sqlalchemy"] },
+    { name = "granian" },
     { name = "loguru" },
     { name = "pwdlib" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "sqlmodel" },
-    { name = "uvicorn", extra = ["standard"] },
 ]
 
 [package.dev-dependencies]
@@ -973,12 +992,12 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.13.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.108.0" },
     { name = "fastapi-users", extras = ["oauth", "sqlalchemy"], specifier = ">=14.0.0" },
+    { name = "granian", specifier = ">=1.7.3" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "pwdlib", specifier = ">=0.2.1" },
     { name = "pydantic", specifier = ">=2.5.2" },
     { name = "pydantic-settings", specifier = ">=2.1.0" },
     { name = "sqlmodel", specifier = ">=0.0.14" },
-    { name = "uvicorn", extras = ["standard"], specifier = ">=0.25.0" },
 ]
 
 [package.metadata.requires-dev]
