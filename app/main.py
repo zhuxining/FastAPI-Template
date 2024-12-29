@@ -9,6 +9,7 @@ from fastapi.routing import APIRoute
 from loguru import logger
 
 from app.api.api import api_router
+from app.api.deps import create_user
 from app.core.config import settings
 from app.core.db import create_db_and_tables
 
@@ -16,9 +17,16 @@ from app.core.db import create_db_and_tables
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Not needed if you setup a migration system like Alembic
-    logger.add("logs/app_{time:YYYY-MM-DD}.log", rotation="1 day", retention="7 days", enqueue=True)
-    logger.info("FastAPI app started")
+    logger.add(
+        "logs/app_{time:YYYY-MM-DD}.log",
+        level="SUCCESS",
+        rotation="1 day",
+        retention="7 days",
+        enqueue=True,
+    )
+    logger.success("FastAPI app started")
     await create_db_and_tables()
+    await create_user(settings.FIRST_SUPERUSER_EMAIL, settings.FIRST_SUPERUSER_PASSWORD)
     yield
 
 

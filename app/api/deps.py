@@ -1,3 +1,4 @@
+import contextlib
 import uuid
 from typing import AsyncGenerator, Optional
 
@@ -9,25 +10,16 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi_users.exceptions import UserAlreadyExists
+from loguru import logger
+
+# from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import settings
 from app.core.db import async_session_maker
 from app.models import User
-
-
-async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
-        try:
-            yield session
-        finally:
-            await session.close()
-
-
-async def get_user_db(session: AsyncSession = Depends(get_db)):
-    from app.models.user import OAuthAccount, User  # Import here to avoid circular dependency
-
-    yield SQLAlchemyUserDatabase(session, User, OAuthAccount)
+from app.schemas import UserCreate
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
@@ -48,11 +40,22 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
 
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_maker() as session:
+        try:
+            yield session
+        finally:
+            await session.close()
+
+
+async def get_user_db(session: AsyncSession = Depends(get_db)):
+    from app.models.user import OAuthAccount, User  # Import here to avoid circular dependency
+
+    yield SQLAlchemyUserDatabase(session, User, OAuthAccount)
+
+
 async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
-
-
-bearer_transport = BearerTransport(tokenUrl=f"{settings.API_V1_STR}/auth/jwt/login")
 
 
 def get_jwt_strategy() -> JWTStrategy:
@@ -61,6 +64,7 @@ def get_jwt_strategy() -> JWTStrategy:
     )
 
 
+bearer_transport = BearerTransport(tokenUrl=f"{settings.API_V1_STR}/auth/jwt/login")
 auth_backend = AuthenticationBackend(
     name="jwt",
     transport=bearer_transport,
@@ -68,6 +72,24 @@ auth_backend = AuthenticationBackend(
 )
 
 fastapi_users = FastAPIUsers[User, uuid.UUID](get_user_manager, [auth_backend])
-
 current_active_user = fastapi_users.current_user(active=True)
 current_superuser = fastapi_users.current_user(active=True, superuser=True)
+
+get_async_session_context = contextlib.asynccontextmanager(get_db)
+get_user_db_context = contextlib.asynccontextmanager(get_user_db)
+get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
+
+
+async def create_user(email: str, password: str, is_superuser: bool = False):
+    try:
+        async with get_async_session_context() as session:
+            async with get_user_db_context(session) as user_db:
+                async with get_user_manager_context(user_db) as user_manager:
+                    user = await user_manager.create(
+                        UserCreate(email=email, password=password, is_superuser=is_superuser)
+                    )
+                    logger.info(f"User created {user}")
+                    return user
+    except UserAlreadyExists:
+        logger.info(f"User {email} already exists")
+        pass

@@ -50,7 +50,7 @@ class Settings(BaseSettings):
     TRUSTED_HOSTS: Annotated[list | str, BeforeValidator(parse_cors)] = []
 
     # Database Settings
-    SQLITE_URL: str = "sqlite+aiosqlite:///./test.db"
+    SQLITE_URL: str = "sqlite+aiosqlite:///./dev.db"
 
     POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432

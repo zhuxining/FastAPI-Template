@@ -21,8 +21,8 @@ class PostUpdate(BaseModel):
 
 
 class Post(PostBase):
-    id: int
+    id: uuid.UUID
     author_id: uuid.UUID
 
-    class Config:
-        from_attributes = True
+    # class Config:
+    #     from_attributes = True

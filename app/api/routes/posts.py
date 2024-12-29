@@ -1,6 +1,7 @@
-from typing import Annotated, List
+from typing import Annotated, List, Literal
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -30,13 +31,20 @@ async def create_post(
     return post
 
 
+class FilterParams(BaseModel):
+    model_config = {"extra": "forbid"}
+
+    limit: int = Field(100, gt=0, le=100)
+    offset: int = Field(0, ge=0)
+    order_by: Literal["created_at", "updated_at"] = "created_at"
+
+
 @router.get("/", response_model=List[schemas.Post])
 async def read_posts(
     db: Annotated[AsyncSession, Depends(deps.get_db)],
-    skip: int = 0,
-    limit: int = 100,
+    filter_query: Annotated[FilterParams, Query()],
 ):
-    result = await db.execute(select(Post).offset(skip).limit(limit))
+    result = await db.execute(select(Post).offset(filter_query.offset).limit(filter_query.limit))
     posts = result.scalars().all()
     return posts
 
