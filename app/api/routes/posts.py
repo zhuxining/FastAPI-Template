@@ -8,7 +8,7 @@ from app import schemas
 from app.api import deps
 from app.models import Post, User
 
-router = APIRouter()
+router = APIRouter(prefix="/posts", tags=["posts"])
 
 
 @router.post("/", response_model=schemas.Post)

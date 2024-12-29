@@ -1,13 +1,14 @@
-from typing import List
-
-from fastapi_users.db import SQLModelBaseUserTableUUID
-from sqlmodel import Relationship, SQLModel
-
-from app.models.post import Post
+from fastapi_users.db import SQLAlchemyBaseOAuthAccountTableUUID, SQLAlchemyBaseUserTableUUID
+from sqlalchemy.orm import DeclarativeBase, Mapped, relationship
 
 
-class User(SQLModelBaseUserTableUUID, SQLModel, table=True):
-    posts: List["Post"] = Relationship(back_populates="author")
+class Base(DeclarativeBase):
+    pass
 
-    class Config:
-        orm_mode = True
+
+class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID, Base):
+    pass
+
+
+class User(SQLAlchemyBaseUserTableUUID, Base):
+    oauth_accounts: Mapped[list[OAuthAccount]] = relationship("OAuthAccount", lazy="joined")

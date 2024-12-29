@@ -8,10 +8,11 @@ from fastapi_users.authentication import (
     BearerTransport,
     JWTStrategy,
 )
+from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.db import async_session_maker, get_user_db
+from app.core.db import async_session_maker
 from app.models import User
 
 
@@ -21,6 +22,12 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
             yield session
         finally:
             await session.close()
+
+
+async def get_user_db(session: AsyncSession = Depends(get_db)):
+    from app.models.user import OAuthAccount, User  # Import here to avoid circular dependency
+
+    yield SQLAlchemyUserDatabase(session, User, OAuthAccount)
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
@@ -45,12 +52,12 @@ async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
 
 
-bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
+bearer_transport = BearerTransport(tokenUrl=f"{settings.API_V1_STR}/auth/jwt/login")
 
 
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(
-        secret=settings.SECRET_KEY, lifetime_seconds=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
+        secret=settings.SECRET_KEY, lifetime_seconds=settings.ACCESS_TOKEN_EXPIRE_MINUTES
     )
 
 

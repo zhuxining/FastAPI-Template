@@ -2,9 +2,11 @@ __pycache__
 .cache
 .pytest_cache
 .ruff_cache
+.ropeproject
 
 .venv
 .env
 
+logs
 .DS_Store
 
