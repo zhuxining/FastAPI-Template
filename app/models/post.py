@@ -1,16 +1,34 @@
 import uuid
 from typing import Optional
 
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import SQLModel
 
-from app.models.user import User
+from .base_model import BaseModel
 
 
-class Post(SQLModel, table=True):
-    __tablename__ = "posts"
-
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    title: str = Field(index=True)
+class PostBase(SQLModel):
+    title: str
     content: str
-    published: bool = Field(default=True)
+    published: bool = True
     author_id: uuid.UUID
+
+
+# database model
+class Post(PostBase, BaseModel, table=True):
+    __tablename__ = "posts"
+    __table_args__ = dict(comment="Posts table")
+
+
+# pydantic models
+class PostCreate(PostBase):
+    pass
+
+
+class PostUpdate(SQLModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    published: Optional[bool] = None
+
+
+class PostRead(PostBase):
+    id: uuid.UUID
