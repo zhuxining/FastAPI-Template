@@ -23,7 +23,7 @@ async def create_post(
     post = Post(
         title=post_in.title,
         content=post_in.content,
-        published=post_in.published,
+        is_published=post_in.is_published,
         author_id=current_user.id,
     )
     db.add(post)

@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from typing import Optional
 
 from sqlmodel import Column, DateTime, Field, SQLModel, func
 
@@ -19,7 +20,8 @@ class BaseModel(SQLModel):
             comment="创建时间, timestamptz",
         )
     )
-    updated_at: datetime = Field(
+    updated_at: Optional[datetime] = Field(
+        default=None,
         sa_column=Column(
             DateTime(timezone=True),
             onupdate=func.current_timestamp(),
@@ -30,8 +32,7 @@ class BaseModel(SQLModel):
         default=False,
         sa_column_kwargs={"comment": "是否软删除"},
     )
-    deleted_at: datetime = Field(
-        sa_column=Column(
-            DateTime(timezone=True), server_default=None, comment="删除时间, timestamptz"
-        ),
+    deleted_at: Optional[datetime] = Field(
+        default=None,
+        sa_column=Column(DateTime(timezone=True), comment="删除时间, timestamptz"),
     )
