@@ -2,7 +2,6 @@ import uuid
 from typing import Annotated, List, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from loguru import logger
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
@@ -14,7 +13,7 @@ from app.models import Post, User
 router = APIRouter(prefix="/posts", tags=["posts"])
 
 
-@router.post("/", response_model=models.PostCreate)
+@router.post("/", response_model=models.PostRead)
 async def create_post(
     *,
     db: AsyncSession = Depends(deps.get_db),
@@ -25,10 +24,8 @@ async def create_post(
         title=post_in.title,
         content=post_in.content,
         published=post_in.published,
-        # create_time=datetime.utcnow(),
         author_id=current_user.id,
     )
-    logger.info(f"User {post} already exists")
     db.add(post)
     await db.commit()
     await db.refresh(post)
@@ -40,7 +37,7 @@ class FilterParams(BaseModel):
 
     limit: int = Field(100, gt=0, le=100)
     offset: int = Field(0, ge=0)
-    order_by: Literal["created_at"] = "created_at"  # 移除 updated_at 选项
+    order_by: Literal["created_at"] = "created_at"
 
 
 @router.get("/", response_model=List[models.PostRead])
