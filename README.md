@@ -1,6 +1,6 @@
 ## 关于项目
 
-这是一个使用现代 FastAPI 最佳实践构建的后端项目。
+这是一个使用 FastAPI 最佳实践构建的纯后端项目，参考官方实践。
 
 ### 构建工具
 
@@ -14,9 +14,6 @@
 
 ## 入门指南
 
-### 先决条件
-
-- Python 3.13 及以上版本
 
 ### 安装
 
@@ -42,18 +39,31 @@ granian --interface rsgi app.main:app --reload --log --access-log
 
 ## 路线图
 
-- [ ] 功能1
-- [ ] 功能2
-- [ ] 功能3
+- [ ] code
+	- [ ] 增删改查 - CRUD
+	- [x] 数据库模型 - base_model 
+		- [x] 表默认字段 
+		- [x] 数据库注释 
+		- [ ] 数据关系 
+	- [ ] 日志
+	- [ ] 工厂函数
+		- [ ] api 文档是否显示
+		- [ ] 数据初始化
+	- [ ] 返回数据格式
+		- [ ] 异常定义
+	- [ ] 完善 FastAPI User 的增删改差及时间记录
+- [ ] deploy
+	- [ ] docker 部署
+	- [ ] work 配置
+	- [ ] 开发/生产环境依赖隔离安装
+- [ ] alembic
+	- [ ] 数据迁移
+- [ ] docs
+    - [ ] 使用的一些注意事项
 
 
 ## 许可证
 
 该项目使用 MIT 许可证。详情请参阅 [LICENSE](LICENSE)。
 
-## 联系方式
-
-你的名字 - [@你的推特](https://twitter.com/你的推特) - 你的邮箱@example.com
-
-项目链接: [https://github.com/your_username/ylsh-backend](https://github.com/your_username/ylsh-backend)
-
+## 感谢

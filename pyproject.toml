@@ -1,5 +1,5 @@
 [project]
-name = "YLSK-Backend"
+name = "FastAPI-Template"
 version = "0.1.0"
 description = "Modern FastAPI backend with best practices"
 readme = "README.md"
